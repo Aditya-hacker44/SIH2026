@@ -59,7 +59,8 @@ export default function StandardsSearchPage() {
     async function fetchData() {
       setLoading(true);
       try {
-        const url = new URL("http://localhost:8000/api/standards/directory");
+        const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+        const url = new URL(`${API_BASE}/api/standards/directory`);
         if (selectedDept && selectedDept !== "All Departments") url.searchParams.append("department", selectedDept);
         if (selectedStatuses.length > 0 && !selectedStatuses.includes("All")) url.searchParams.append("status", selectedStatuses.join(","));
         if (selectedTypes.length > 0) url.searchParams.append("standard_type", selectedTypes.join(","));

@@ -5,6 +5,7 @@ import Link from "next/link";
 // using real backend now
 import { INDIAN_STANDARDS_DB } from "../data/indianStandards";
 import { TENDERS_DB, TenderMatch } from "../data/tenders";
+import { getRecommendations } from "../services/recommendationEngine";
 import { db } from "../lib/firebase";
 import { collection, addDoc } from "firebase/firestore";
 

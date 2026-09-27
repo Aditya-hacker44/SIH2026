@@ -3,8 +3,9 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 
 // using real backend now
-import { INDIAN_STANDARDS_DB } from "../data/indianStandards";
-import { TENDERS_DB, TenderMatch } from "../data/tenders";
+import { INDIAN_STANDARDS_DB } from "../../data/indianStandards";
+import { TENDERS_DB, TenderMatch } from "../../data/tenders";
+import { getRecommendations } from "../../services/recommendationEngine";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
@@ -167,7 +168,7 @@ export default function SearchPage() {
     const opt = {
       margin:       10,
       filename:     'IS-Recommend-Report.pdf',
-      image:        { type: 'jpeg', quality: 0.98 },
+      image:        { type: 'jpeg' as const, quality: 0.98 },
       html2canvas:  { scale: 2 },
       jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
     };

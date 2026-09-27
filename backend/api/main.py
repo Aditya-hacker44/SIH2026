@@ -42,7 +42,7 @@ app.mount("/downloads", StaticFiles(directory=examples_dir), name="downloads")
 
 @app.get("/")
 async def root():
-    return {"message": "IS-Recommend API Backend is running perfectly! Please use the frontend at http://localhost:3000"}
+    return {"message": "IS-Recommend API Backend is running perfectly! Please use the frontend at https://sih-2026-xa6n-nine.vercel.app"}
 
 # --- Pydantic Schemas ---
 

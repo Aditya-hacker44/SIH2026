@@ -231,13 +231,13 @@ export default function SearchPage() {
     setSearched(false);
     
     setLoadingStep("Analyzing procurement requirement...");
-    await sleep(400);
+    await sleep(20);
     setLoadingStep("Detecting product category...");
-    await sleep(400);
+    await sleep(20);
     setLoadingStep("Matching Indian Standards...");
-    await sleep(400);
+    await sleep(20);
     setLoadingStep("Finding relevant tenders...");
-    await sleep(400);
+    await sleep(20);
 
     try {
       const res = await fetch(`${API_BASE}/api/recommend`, {
@@ -356,14 +356,14 @@ export default function SearchPage() {
       }
       
       setLoadingStep("Structuring product input...");
-      await sleep(500);
+      await sleep(20);
       
       setExtractedData(data.extracted);
       
       const combined = `${data.extracted.productName} ${data.extracted.productDescription} ${data.extracted.technicalSpecifications} ${data.extracted.rawText}`;
       
       setLoadingStep("Matching BIS standards...");
-      await sleep(500);
+      await sleep(20);
       
       // We do NOT invent BIS standards, we just pass the extracted text to our existing robust recommendation engine
       const recs = getRecommendations(combined);

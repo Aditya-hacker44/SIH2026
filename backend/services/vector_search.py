@@ -5,7 +5,8 @@ import numpy as np
 from pydantic import BaseModel
 from typing import List, Optional
 
-VECTOR_DIR = "data/vector_store"
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+VECTOR_DIR = os.path.join(BASE_DIR, "data", "vector_store")
 MODEL_NAME = "intfloat/multilingual-e5-base"
 
 class VectorSearchService:

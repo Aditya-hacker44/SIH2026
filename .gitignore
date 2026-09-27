@@ -1,19 +1,61 @@
-# Node
-node_modules/
-.next/
-dist/
+# ==========================================
+# Unified .gitignore for IS-Recommend Monorepo
+# ==========================================
 
-# Python
+# ------------------------------------------
+# General / OS
+# ------------------------------------------
+.DS_Store
+*.pem
+*.log
+
+# ------------------------------------------
+# Environment Variables
+# ------------------------------------------
+.env
+.env.*
+!.env.example
+
+# ------------------------------------------
+# Node.js & Frontend (Next.js)
+# ------------------------------------------
+node_modules/
+frontend/node_modules/
+.next/
+frontend/.next/
+out/
+build/
+dist/
+coverage/
+
+# Next.js specific
+*.tsbuildinfo
+next-env.d.ts
+.vercel/
+
+# Yarn / NPM debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# ------------------------------------------
+# Python & Backend (FastAPI)
+# ------------------------------------------
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
+.Python
+env/
 venv/
 backend_venv/
 win_venv/
-env/
-.env
-
-# MacOS
-.DS_Store
-
-# Logs
-*.log
+.pytest_cache/

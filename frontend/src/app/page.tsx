@@ -247,13 +247,13 @@ export default function SearchPage() {
     setSearched(false);
     
     setLoadingStep("Analyzing procurement requirement...");
-    await sleep(400);
+    await sleep(20);
     setLoadingStep("Detecting product category...");
-    await sleep(400);
+    await sleep(20);
     setLoadingStep("Matching Indian Standards...");
-    await sleep(400);
+    await sleep(20);
     setLoadingStep("Finding relevant tenders...");
-    await sleep(400);
+    await sleep(20);
 
     try {
       const res = await fetch(`${API_BASE}/api/recommend`, {
@@ -288,10 +288,12 @@ export default function SearchPage() {
     } catch(err) {
       setErrorMsg("Failed to connect to backend recommendation engine.");
     }
-
     setLoading(false);
     setSearched(true);
     
+    setTimeout(() => {
+      document.getElementById('results-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
     // Auto-print if requested via URL
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
@@ -372,14 +374,14 @@ export default function SearchPage() {
       }
       
       setLoadingStep("Structuring product input...");
-      await sleep(500);
+      await sleep(20);
       
       setExtractedData(data.extracted);
       
       const combined = `${data.extracted.productName} ${data.extracted.productDescription} ${data.extracted.technicalSpecifications} ${data.extracted.rawText}`;
       
       setLoadingStep("Matching BIS standards...");
-      await sleep(500);
+      await sleep(20);
       
       // We do NOT invent BIS standards, we just pass the extracted text to our existing robust recommendation engine
       const recs = getRecommendations(combined);
@@ -406,6 +408,9 @@ export default function SearchPage() {
     } finally {
       setLoading(false);
       setSearched(true);
+      setTimeout(() => {
+        document.getElementById('results-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
     }
   }
 
@@ -862,6 +867,8 @@ export default function SearchPage() {
       {/* ═══════════════════════════════════════════
           RICH RESULTS SECTION
           ═══════════════════════════════════════════ */}
+      <div id="results-section" className="scroll-mt-8"></div>
+      
       {searched && (
         <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
           
@@ -1041,6 +1048,11 @@ export default function SearchPage() {
                       </div>
                     </div>
 
+                  </div>
+                )}
+
+                {resultsTab === 'related' && (
+                  <div className="space-y-6">
                     {/* Allied / Related Standards Section */}
                     <div className="print:break-before-page">
                       <h3 className="flex items-center gap-2 text-[#0B3558] font-bold text-[17px] mb-3 mt-6 print:mt-0">
@@ -1092,24 +1104,13 @@ export default function SearchPage() {
                         </table>
                       </div>
                     </div>
+                  </div>
+                )}
 
-                    {/* Bottom Info Cards */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6 print:break-before-page print:mt-0">
-                      {/* Version Info Card */}
-                      <div className="bg-[#FFFDF4] border border-[#FBE8B4] rounded-xl p-4 shadow-sm">
-                        <h4 className="flex items-center gap-2 text-[#D97706] font-bold mb-3 text-[15px]">
-                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-                          Version & Amendment Information
-                        </h4>
-                        <div className="space-y-2 text-[13px]">
-                          <div className="flex gap-2 items-center"><div className="w-4 h-4 rounded-full bg-[#16A34A] text-white flex items-center justify-center shrink-0"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg></div><div><span className="font-bold text-gray-700">Latest Version:</span> <span className="text-gray-800">IS 10322:2023</span></div></div>
-                          <div className="flex gap-2 items-center"><div className="w-4 h-4 rounded-full bg-[#3B82F6] text-white flex items-center justify-center shrink-0"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div><div><span className="font-bold text-gray-700">Previous Version:</span> <span className="text-gray-800">IS 10322:2012 (Revised)</span></div></div>
-                          <div className="flex gap-2 items-center"><div className="w-4 h-4 rounded-full bg-[#3B82F6] text-white flex items-center justify-center shrink-0"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div><div><span className="font-bold text-gray-700">Amendments:</span> <span className="text-gray-800">Amendment 1: 2024</span></div></div>
-                          <div className="flex gap-2 items-center"><div className="w-4 h-4 rounded-full bg-[#16A34A] text-white flex items-center justify-center shrink-0"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg></div><div><span className="font-bold text-gray-700">Status:</span> <span className="font-bold text-[#16A34A]">Active</span></div></div>
-                        </div>
-                      </div>
-
-                      {/* Certification Card */}
+                {resultsTab === 'cert' && (
+                  <div className="space-y-6">
+                    {/* Certification Card */}
+                    <div className="max-w-xl mt-6 print:break-before-page print:mt-0">
                       <div className="bg-[#FCF5FF] border border-[#E9D5FF] rounded-xl p-4 shadow-sm">
                         <h4 className="flex items-center gap-2 text-[#7E22CE] font-bold mb-3 text-[15px]">
                           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><circle cx="12" cy="11" r="3"/></svg>
@@ -1138,7 +1139,27 @@ export default function SearchPage() {
                   </div>
                 )}
 
-                {resultsTab !== 'recommended' && (
+                {resultsTab === 'gap' && (
+                  <div className="space-y-6">
+                    {/* Version Info Card */}
+                    <div className="max-w-xl mt-6 print:break-before-page print:mt-0">
+                      <div className="bg-[#FFFDF4] border border-[#FBE8B4] rounded-xl p-4 shadow-sm">
+                        <h4 className="flex items-center gap-2 text-[#D97706] font-bold mb-3 text-[15px]">
+                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                          Version & Amendment Information
+                        </h4>
+                        <div className="space-y-2 text-[13px]">
+                          <div className="flex gap-2 items-center"><div className="w-4 h-4 rounded-full bg-[#16A34A] text-white flex items-center justify-center shrink-0"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg></div><div><span className="font-bold text-gray-700">Latest Version:</span> <span className="text-gray-800">IS 10322:2023</span></div></div>
+                          <div className="flex gap-2 items-center"><div className="w-4 h-4 rounded-full bg-[#3B82F6] text-white flex items-center justify-center shrink-0"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div><div><span className="font-bold text-gray-700">Previous Version:</span> <span className="text-gray-800">IS 10322:2012 (Revised)</span></div></div>
+                          <div className="flex gap-2 items-center"><div className="w-4 h-4 rounded-full bg-[#3B82F6] text-white flex items-center justify-center shrink-0"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div><div><span className="font-bold text-gray-700">Amendments:</span> <span className="text-gray-800">Amendment 1: 2024</span></div></div>
+                          <div className="flex gap-2 items-center"><div className="w-4 h-4 rounded-full bg-[#16A34A] text-white flex items-center justify-center shrink-0"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg></div><div><span className="font-bold text-gray-700">Status:</span> <span className="font-bold text-[#16A34A]">Active</span></div></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {resultsTab !== 'recommended' && resultsTab !== 'related' && resultsTab !== 'cert' && resultsTab !== 'gap' && (
                   <div className="py-12 text-center text-gray-500">
                     Content for {resultsTab} will be displayed here.
                   </div>
